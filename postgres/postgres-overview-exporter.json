@@ -5640,7 +5640,7 @@
         ]
       },
       "timezone": "browser",
-      "title": "PostgreSQL Overview (postgres_exporter)",
+      "title": "PostgreSQL Overview",
       "uid": "pg-overview",
       "version": 3,
       "weekStart": ""
