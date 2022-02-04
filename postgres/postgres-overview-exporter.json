@@ -1700,7 +1700,7 @@
                     "uid": "P1809F7CD0C75ACF3"
                   },
                   "exemplar": true,
-                  "expr": "topk(5, (pg_database_size_bytes{instance=\"$instance\"}))",
+                  "expr": "pg_database_size_bytes{instance=\"$instance\"}",
                   "format": "time_series",
                   "interval": "",
                   "intervalFactor": 2,
