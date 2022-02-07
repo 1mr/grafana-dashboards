@@ -593,7 +593,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "redis_memory_fragmentation_ratio{kubernetes_namespace=~\"$namespace\", kubernetes_pod_name=~\"$instance\"}",
+          "expr": "redis_mem_fragmentation_ratio{kubernetes_namespace=~\"$namespace\", kubernetes_pod_name=~\"$instance\"}",
           "hide": false,
           "interval": "",
           "legendFormat": "{{instance}}",
