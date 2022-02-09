@@ -1700,7 +1700,7 @@
                     "uid": "P1809F7CD0C75ACF3"
                   },
                   "exemplar": true,
-                  "expr": "pg_database_size_bytes{instance=\"$instance\"}",
+                  "expr": "pg_database_size_bytes{instance=\"$instance\", datname=~\"$datname\"}",
                   "format": "time_series",
                   "interval": "",
                   "intervalFactor": 2,
@@ -3935,7 +3935,7 @@
               "steppedLine": false,
               "targets": [
                 {
-                  "expr": "rate(pg_stat_database_xact_commit{instance=\"$instance\"}[1m]) > 1",
+                  "expr": "rate(pg_stat_database_xact_commit{instance=\"$instance\", datname=~\"$datname\"}[1m]) > 1",
                   "format": "time_series",
                   "hide": false,
                   "intervalFactor": 1,
@@ -4032,7 +4032,7 @@
               "steppedLine": false,
               "targets": [
                 {
-                  "expr": "rate(pg_stat_database_xact_rollback{instance=\"$instance\"}[1m]) > 1",
+                  "expr": "rate(pg_stat_database_xact_rollback{instance=\"$instance\", datname=~\"$datname\"}[1m]) > 1",
                   "format": "time_series",
                   "hide": false,
                   "intervalFactor": 1,
@@ -4261,14 +4261,14 @@
               "steppedLine": false,
               "targets": [
                 {
-                  "expr": "rate(pg_stat_database_tup_fetched{instance=\"$instance\"}[5m]) > 1000",
+                  "expr": "rate(pg_stat_database_tup_fetched{instance=\"$instance\", datname=~\"$datname\"}[5m]) > 1000",
                   "format": "time_series",
                   "intervalFactor": 1,
                   "legendFormat": "{{datname}} SELECT (index scan)",
                   "refId": "A"
                 },
                 {
-                  "expr": "rate(pg_stat_database_tup_returned{instance=\"$instance\"}[5m]) > 1000",
+                  "expr": "rate(pg_stat_database_tup_returned{instance=\"$instance\", datname=~\"$datname\"}[5m]) > 1000",
                   "format": "time_series",
                   "intervalFactor": 1,
                   "legendFormat": "{{datname}} SELECT (table scan)",
@@ -4365,21 +4365,21 @@
               "steppedLine": false,
               "targets": [
                 {
-                  "expr": "rate(pg_stat_database_tup_inserted{instance=\"$instance\"}[5m]) > 1",
+                  "expr": "rate(pg_stat_database_tup_inserted{instance=\"$instance\", datname=~\"$datname\"}[5m]) > 1",
                   "format": "time_series",
                   "intervalFactor": 1,
                   "legendFormat": "{{datname}} INSERT",
                   "refId": "A"
                 },
                 {
-                  "expr": "rate(pg_stat_database_tup_updated{instance=\"$instance\"}[5m]) > 1",
+                  "expr": "rate(pg_stat_database_tup_updated{instance=\"$instance\", datname=~\"$datname\"}[5m]) > 1",
                   "format": "time_series",
                   "intervalFactor": 1,
                   "legendFormat": "{{datname}} UPDATE",
                   "refId": "B"
                 },
                 {
-                  "expr": "rate(pg_stat_database_tup_deleted{instance=\"$instance\"}[5m]) > 1",
+                  "expr": "rate(pg_stat_database_tup_deleted{instance=\"$instance\", datname=~\"$datname\"}[5m]) > 1",
                   "format": "time_series",
                   "intervalFactor": 1,
                   "legendFormat": "{{datname}} DELETE",
