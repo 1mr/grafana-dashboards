@@ -13,7 +13,7 @@
       {
         "datasource": "$datasource",
         "enable": true,
-        "expr": "process_start_time_seconds{app=~\"$app\", instance=~\"$instance\"} * 1000",
+        "expr": "process_start_time_seconds{app_kubernetes_io_name=~\"$app\", instance=~\"$instance\"} * 1000",
         "hide": false,
         "iconColor": "#B877D9",
         "name": "Node.js Start",
@@ -26,14 +26,16 @@
   },
   "description": "Prometheus Node.js Exporter dashboard",
   "editable": true,
+  "fiscalYearStartMonth": 0,
   "gnetId": 14058,
   "graphTooltip": 0,
-  "id": 22,
-  "iteration": 1621426791523,
+  "id": 23,
+  "iteration": 1656334544196,
   "links": [],
+  "liveNow": false,
   "panels": [
     {
-      "datasource": null,
+      "datasource": "$datasource",
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -41,33 +43,50 @@
         "y": 0
       },
       "id": 1,
+      "targets": [
+        {
+          "datasource": "$datasource",
+          "refId": "A"
+        }
+      ],
       "title": "Overview",
       "type": "row"
     },
     {
-      "cacheTimeout": null,
-      "colorBackground": false,
-      "colorValue": false,
-      "colors": [
-        "#299c46",
-        "rgba(237, 129, 40, 0.89)",
-        "#d44a3a"
-      ],
       "datasource": "$datasource",
       "description": "The version of Node.js.",
       "fieldConfig": {
         "defaults": {
-          "custom": {}
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
         },
         "overrides": []
-      },
-      "format": "none",
-      "gauge": {
-        "maxValue": 100,
-        "minValue": 0,
-        "show": false,
-        "thresholdLabels": false,
-        "thresholdMarkers": true
       },
       "gridPos": {
         "h": 2,
@@ -76,46 +95,27 @@
         "y": 1
       },
       "id": 2,
-      "interval": null,
       "links": [],
-      "mappingType": 1,
-      "mappingTypes": [
-        {
-          "name": "value to text",
-          "value": 1
-        },
-        {
-          "name": "range to text",
-          "value": 2
-        }
-      ],
       "maxDataPoints": 100,
-      "nullPointMode": "connected",
-      "nullText": null,
-      "pluginVersion": "6.6.2",
-      "postfix": "",
-      "postfixFontSize": "50%",
-      "prefix": "",
-      "prefixFontSize": "50%",
-      "rangeMaps": [
-        {
-          "from": "null",
-          "text": "N/A",
-          "to": "null"
-        }
-      ],
-      "sparkline": {
-        "fillColor": "rgba(31, 118, 189, 0.18)",
-        "full": false,
-        "lineColor": "rgb(31, 120, 193)",
-        "show": false,
-        "ymax": null,
-        "ymin": null
+      "options": {
+        "colorMode": "none",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "first"
+          ],
+          "fields": "/^version$/",
+          "values": false
+        },
+        "textMode": "auto"
       },
-      "tableColumn": "version",
+      "pluginVersion": "9.0.1",
       "targets": [
         {
-          "expr": "sum(nodejs_version_info{app=~\"$app\", kubernetes_pod_name=~\"$pod\"}) by (version)",
+          "datasource": "$datasource",
+          "expr": "sum(nodejs_version_info{app_kubernetes_io_name=~\"$app\", kubernetes_pod_name=~\"$pod\"}) by (version)",
           "format": "table",
           "instant": true,
           "interval": "",
@@ -123,45 +123,35 @@
           "refId": "A"
         }
       ],
-      "thresholds": "",
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Node.js Version",
-      "type": "singlestat",
-      "valueFontSize": "80%",
-      "valueMaps": [
-        {
-          "op": "=",
-          "text": "N/A",
-          "value": "null"
-        }
-      ],
-      "valueName": "first"
+      "type": "stat"
     },
     {
-      "cacheTimeout": null,
-      "colorBackground": false,
-      "colorValue": false,
-      "colors": [
-        "#299c46",
-        "rgba(237, 129, 40, 0.89)",
-        "#d44a3a"
-      ],
       "datasource": "$datasource",
       "description": "The number of times Node.js restarted.",
       "fieldConfig": {
         "defaults": {
-          "custom": {}
+          "color": {
+            "fixedColor": "#F2495C",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
         },
         "overrides": []
-      },
-      "format": "none",
-      "gauge": {
-        "maxValue": 100,
-        "minValue": 0,
-        "show": false,
-        "thresholdLabels": false,
-        "thresholdMarkers": true
       },
       "gridPos": {
         "h": 2,
@@ -170,64 +160,39 @@
         "y": 1
       },
       "id": 3,
-      "interval": null,
       "links": [],
-      "mappingType": 1,
-      "mappingTypes": [
-        {
-          "name": "value to text",
-          "value": 1
-        },
-        {
-          "name": "range to text",
-          "value": 2
-        }
-      ],
       "maxDataPoints": 100,
-      "nullPointMode": "connected",
-      "nullText": null,
-      "pluginVersion": "6.6.2",
-      "postfix": "",
-      "postfixFontSize": "50%",
-      "prefix": "",
-      "prefixFontSize": "50%",
-      "rangeMaps": [
-        {
-          "from": "null",
-          "text": "N/A",
-          "to": "null"
-        }
-      ],
-      "sparkline": {
-        "fillColor": "rgba(31, 118, 189, 0.18)",
-        "full": false,
-        "lineColor": "#F2495C",
-        "show": true,
-        "ymax": null,
-        "ymin": null
+      "options": {
+        "colorMode": "none",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
       },
-      "tableColumn": "",
+      "pluginVersion": "9.0.1",
       "targets": [
         {
-          "expr": "sum(changes(process_start_time_seconds{app=~\"$app\", kubernetes_pod_name=~\"$pod\"}[$interval]))",
+          "datasource": "$datasource",
+          "expr": "sum(changes(process_start_time_seconds{app_kubernetes_io_name=~\"$app\", kubernetes_pod_name=~\"$pod\"}[$interval]))",
           "instant": false,
           "interval": "",
           "legendFormat": "{{kubernetes_pod_name}}",
           "refId": "A"
         }
       ],
-      "thresholds": "",
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Node.js Restarts",
-      "type": "singlestat",
-      "valueFontSize": "80%",
-      "valueMaps": [],
-      "valueName": "current"
+      "type": "stat"
     },
     {
       "collapsed": false,
-      "datasource": null,
+      "datasource": "$datasource",
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -236,6 +201,12 @@
       },
       "id": 4,
       "panels": [],
+      "targets": [
+        {
+          "datasource": "$datasource",
+          "refId": "A"
+        }
+      ],
       "title": "Process",
       "type": "row"
     },
@@ -248,7 +219,6 @@
       "description": "CPU usage.",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -283,7 +253,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.5",
+      "pluginVersion": "9.0.1",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -293,29 +263,30 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "irate(process_cpu_user_seconds_total{app=~\"$app\", kubernetes_pod_name=~\"$pod\"}[$interval]) * 100",
+          "datasource": "$datasource",
+          "expr": "irate(process_cpu_user_seconds_total{app_kubernetes_io_name=~\"$app\", kubernetes_pod_name=~\"$pod\"}[$interval]) * 100",
           "instant": false,
           "interval": "",
           "legendFormat": "User CPU - {{kubernetes_pod_name}}",
           "refId": "A"
         },
         {
-          "expr": "irate(process_cpu_system_seconds_total{app=~\"$app\", kubernetes_pod_name=~\"$pod\"}[$interval]) * 100",
+          "datasource": "$datasource",
+          "expr": "irate(process_cpu_system_seconds_total{app_kubernetes_io_name=~\"$app\", kubernetes_pod_name=~\"$pod\"}[$interval]) * 100",
           "interval": "",
           "legendFormat": "System CPU - {{kubernetes_pod_name}}",
           "refId": "B"
         },
         {
-          "expr": "irate(process_cpu_seconds_total{app=~\"$app\", kubernetes_pod_name=~\"$pod\"}[$interval]) * 100",
+          "datasource": "$datasource",
+          "expr": "irate(process_cpu_seconds_total{app_kubernetes_io_name=~\"$app\", kubernetes_pod_name=~\"$pod\"}[$interval]) * 100",
           "interval": "",
           "legendFormat": "Total CPU - {{kubernetes_pod_name}}",
           "refId": "C"
         }
       ],
       "thresholds": [],
-      "timeFrom": null,
       "timeRegions": [],
-      "timeShift": null,
       "title": "CPU Usage",
       "tooltip": {
         "shared": true,
@@ -324,9 +295,7 @@
       },
       "type": "graph",
       "xaxis": {
-        "buckets": null,
         "mode": "time",
-        "name": null,
         "show": true,
         "values": []
       },
@@ -334,25 +303,18 @@
         {
           "$$hashKey": "object:289",
           "format": "percent",
-          "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
           "show": true
         },
         {
           "$$hashKey": "object:290",
           "format": "short",
-          "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
           "show": false
         }
       ],
       "yaxis": {
-        "align": false,
-        "alignLevel": null
+        "align": false
       }
     },
     {
@@ -364,7 +326,6 @@
       "description": "CPU time spent.",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -399,7 +360,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.5",
+      "pluginVersion": "9.0.1",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -409,16 +370,15 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "rate(process_cpu_seconds_total{app=~\"$app\", kubernetes_pod_name=~\"$pod\"}[$interval])",
+          "datasource": "$datasource",
+          "expr": "rate(process_cpu_seconds_total{app_kubernetes_io_name=~\"$app\", kubernetes_pod_name=~\"$pod\"}[$interval])",
           "interval": "",
           "legendFormat": "{{kubernetes_pod_name}}",
           "refId": "A"
         }
       ],
       "thresholds": [],
-      "timeFrom": null,
       "timeRegions": [],
-      "timeShift": null,
       "title": "CPU Time Spent",
       "tooltip": {
         "shared": true,
@@ -427,9 +387,7 @@
       },
       "type": "graph",
       "xaxis": {
-        "buckets": null,
         "mode": "time",
-        "name": null,
         "show": true,
         "values": []
       },
@@ -437,25 +395,18 @@
         {
           "$$hashKey": "object:368",
           "format": "s",
-          "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
           "show": true
         },
         {
           "$$hashKey": "object:369",
           "format": "short",
-          "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
           "show": false
         }
       ],
       "yaxis": {
-        "align": false,
-        "alignLevel": null
+        "align": false
       }
     },
     {
@@ -467,7 +418,6 @@
       "description": "Memory usage.",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -503,7 +453,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.5",
+      "pluginVersion": "9.0.1",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -513,24 +463,28 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "process_resident_memory_bytes{app=~\"$app\", kubernetes_pod_name=~\"$pod\"}",
+          "datasource": "$datasource",
+          "expr": "process_resident_memory_bytes{app_kubernetes_io_name=~\"$app\", kubernetes_pod_name=~\"$pod\"}",
           "interval": "",
           "legendFormat": "Process Memory - {{kubernetes_pod_name}}",
           "refId": "A"
         },
         {
-          "expr": "nodejs_heap_size_total_bytes{app=~\"$app\", kubernetes_pod_name=~\"$pod\"}",
+          "datasource": "$datasource",
+          "expr": "nodejs_heap_size_total_bytes{app_kubernetes_io_name=~\"$app\", kubernetes_pod_name=~\"$pod\"}",
           "interval": "",
           "legendFormat": "Heap Total - {{kubernetes_pod_name}}",
           "refId": "B"
         },
         {
-          "expr": "nodejs_heap_size_used_bytes{app=~\"$app\", kubernetes_pod_name=~\"$pod\"}",
+          "datasource": "$datasource",
+          "expr": "nodejs_heap_size_used_bytes{app_kubernetes_io_name=~\"$app\", kubernetes_pod_name=~\"$pod\"}",
           "interval": "",
           "legendFormat": "Heap Used - {{kubernetes_pod_name}}",
           "refId": "C"
         },
         {
+          "datasource": "$datasource",
           "expr": "nodejs_external_memory_bytes{app=~\"$app\", kubernetes_pod_name=~\"$pod\"}",
           "interval": "",
           "legendFormat": "External Memory - {{kubernetes_pod_name}}",
@@ -538,9 +492,7 @@
         }
       ],
       "thresholds": [],
-      "timeFrom": null,
       "timeRegions": [],
-      "timeShift": null,
       "title": "Memory Usage",
       "tooltip": {
         "shared": true,
@@ -549,9 +501,7 @@
       },
       "type": "graph",
       "xaxis": {
-        "buckets": null,
         "mode": "time",
-        "name": null,
         "show": true,
         "values": []
       },
@@ -559,25 +509,18 @@
         {
           "$$hashKey": "object:598",
           "format": "bytes",
-          "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
           "show": true
         },
         {
           "$$hashKey": "object:599",
           "format": "short",
-          "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
           "show": false
         }
       ],
       "yaxis": {
-        "align": false,
-        "alignLevel": null
+        "align": false
       }
     },
     {
@@ -589,7 +532,6 @@
       "description": "Number of active handle and active requests.",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -621,7 +563,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.5",
+      "pluginVersion": "9.0.1",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -631,22 +573,22 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "nodejs_active_handles_total{app=~\"$app\", kubernetes_pod_name=~\"$pod\"}",
+          "datasource": "$datasource",
+          "expr": "nodejs_active_handles_total{app_kubernetes_io_name=~\"$app\", kubernetes_pod_name=~\"$pod\"}",
           "interval": "",
           "legendFormat": "Active Handler - {{kubernetes_pod_name}}",
           "refId": "A"
         },
         {
-          "expr": "nodejs_active_requests_total{app=~\"$app\", kubernetes_pod_name=~\"$pod\"}",
+          "datasource": "$datasource",
+          "expr": "nodejs_active_requests_total{app_kubernetes_io_name=~\"$app\", kubernetes_pod_name=~\"$pod\"}",
           "interval": "",
           "legendFormat": "Active Request - {{kubernetes_pod_name}}",
           "refId": "B"
         }
       ],
       "thresholds": [],
-      "timeFrom": null,
       "timeRegions": [],
-      "timeShift": null,
       "title": "Active Handlers and Requests",
       "tooltip": {
         "shared": true,
@@ -655,9 +597,7 @@
       },
       "type": "graph",
       "xaxis": {
-        "buckets": null,
         "mode": "time",
-        "name": null,
         "show": true,
         "values": []
       },
@@ -665,25 +605,18 @@
         {
           "$$hashKey": "object:677",
           "format": "short",
-          "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
           "show": true
         },
         {
           "$$hashKey": "object:678",
           "format": "short",
-          "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
           "show": false
         }
       ],
       "yaxis": {
-        "align": false,
-        "alignLevel": null
+        "align": false
       }
     },
     {
@@ -695,7 +628,6 @@
       "description": "Latency of the event loop.",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -728,7 +660,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.5",
+      "pluginVersion": "9.0.1",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -738,7 +670,8 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "nodejs_eventloop_lag_seconds{app=~\"$app\", kubernetes_pod_name=~\"$pod\"}",
+          "datasource": "$datasource",
+          "expr": "nodejs_eventloop_lag_seconds{app_kubernetes_io_name=~\"$app\", kubernetes_pod_name=~\"$pod\"}",
           "hide": false,
           "instant": false,
           "interval": "",
@@ -746,22 +679,22 @@
           "refId": "A"
         },
         {
-          "expr": "nodejs_eventloop_lag_p99_seconds{app=~\"$app\", kubernetes_pod_name=~\"$pod\"}",
+          "datasource": "$datasource",
+          "expr": "nodejs_eventloop_lag_p99_seconds{app_kubernetes_io_name=~\"$app\", kubernetes_pod_name=~\"$pod\"}",
           "interval": "",
           "legendFormat": "P99 - {{kubernetes_pod_name}}",
           "refId": "B"
         },
         {
-          "expr": "nodejs_eventloop_lag_p50_seconds{app=~\"$app\", kubernetes_pod_name=~\"$pod\"}",
+          "datasource": "$datasource",
+          "expr": "nodejs_eventloop_lag_p50_seconds{app_kubernetes_io_name=~\"$app\", kubernetes_pod_name=~\"$pod\"}",
           "interval": "",
           "legendFormat": "P50 - {{kubernetes_pod_name}}",
           "refId": "C"
         }
       ],
       "thresholds": [],
-      "timeFrom": null,
       "timeRegions": [],
-      "timeShift": null,
       "title": "Event Loop Latency",
       "tooltip": {
         "shared": true,
@@ -770,9 +703,7 @@
       },
       "type": "graph",
       "xaxis": {
-        "buckets": null,
         "mode": "time",
-        "name": null,
         "show": true,
         "values": []
       },
@@ -780,30 +711,23 @@
         {
           "$$hashKey": "object:756",
           "format": "s",
-          "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
           "show": true
         },
         {
           "$$hashKey": "object:757",
           "format": "short",
-          "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
           "show": false
         }
       ],
       "yaxis": {
-        "align": false,
-        "alignLevel": null
+        "align": false
       }
     },
     {
       "collapsed": false,
-      "datasource": null,
+      "datasource": "$datasource",
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -812,6 +736,12 @@
       },
       "id": 10,
       "panels": [],
+      "targets": [
+        {
+          "datasource": "$datasource",
+          "refId": "A"
+        }
+      ],
       "title": "Garbage Collector",
       "type": "row"
     },
@@ -824,7 +754,6 @@
       "description": "Rate of garbage collection duration.",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -858,7 +787,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.5",
+      "pluginVersion": "9.0.1",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -868,16 +797,15 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "rate(nodejs_gc_duration_seconds_sum{app=~\"$app\", kubernetes_pod_name=~\"$pod\"}[$interval])",
+          "datasource": "$datasource",
+          "expr": "rate(nodejs_gc_duration_seconds_sum{app_kubernetes_io_name=~\"$app\", kubernetes_pod_name=~\"$pod\"}[$interval])",
           "interval": "",
           "legendFormat": "{{kind}} - {{kubernetes_pod_name}}",
           "refId": "A"
         }
       ],
       "thresholds": [],
-      "timeFrom": null,
       "timeRegions": [],
-      "timeShift": null,
       "title": "GC Duration Rate",
       "tooltip": {
         "shared": true,
@@ -886,36 +814,27 @@
       },
       "type": "graph",
       "xaxis": {
-        "buckets": null,
         "mode": "time",
-        "name": null,
         "show": true,
         "values": []
       },
       "yaxes": [
         {
           "$$hashKey": "object:835",
-          "decimals": null,
           "format": "s",
           "label": "",
           "logBase": 1,
-          "max": null,
-          "min": null,
           "show": true
         },
         {
           "$$hashKey": "object:836",
           "format": "short",
-          "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
           "show": false
         }
       ],
       "yaxis": {
-        "align": false,
-        "alignLevel": null
+        "align": false
       }
     },
     {
@@ -927,7 +846,6 @@
       "description": "Duration of garbage collection.",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -961,7 +879,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.5",
+      "pluginVersion": "9.0.1",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -971,16 +889,15 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "nodejs_gc_duration_seconds_sum{app=~\"$app\", kubernetes_pod_name=~\"$pod\"}",
+          "datasource": "$datasource",
+          "expr": "nodejs_gc_duration_seconds_sum{app_kubernetes_io_name=~\"$app\", kubernetes_pod_name=~\"$pod\"}",
           "interval": "",
           "legendFormat": "{{kind}} - {{kubernetes_pod_name}}",
           "refId": "A"
         }
       ],
       "thresholds": [],
-      "timeFrom": null,
       "timeRegions": [],
-      "timeShift": null,
       "title": "GC Duration",
       "tooltip": {
         "shared": true,
@@ -989,36 +906,27 @@
       },
       "type": "graph",
       "xaxis": {
-        "buckets": null,
         "mode": "time",
-        "name": null,
         "show": true,
         "values": []
       },
       "yaxes": [
         {
           "$$hashKey": "object:914",
-          "decimals": null,
           "format": "s",
           "label": "",
           "logBase": 2,
-          "max": null,
-          "min": null,
           "show": true
         },
         {
           "$$hashKey": "object:915",
           "format": "s",
-          "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
           "show": true
         }
       ],
       "yaxis": {
-        "align": false,
-        "alignLevel": null
+        "align": false
       }
     },
     {
@@ -1030,7 +938,6 @@
       "description": "Usage of heap memory.",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -1064,7 +971,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.5",
+      "pluginVersion": "9.0.1",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1074,34 +981,36 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "nodejs_heap_size_total_bytes{app=~\"$app\", kubernetes_pod_name=~\"$pod\"}",
+          "datasource": "$datasource",
+          "expr": "nodejs_heap_size_total_bytes{app_kubernetes_io_name=~\"$app\", kubernetes_pod_name=~\"$pod\"}",
           "interval": "",
           "legendFormat": "Total - {{kubernetes_pod_name}}",
           "refId": "A"
         },
         {
-          "expr": "nodejs_heap_size_used_bytes{app=~\"$app\", kubernetes_pod_name=~\"$pod\"}",
+          "datasource": "$datasource",
+          "expr": "nodejs_heap_size_used_bytes{app_kubernetes_io_name=~\"$app\", kubernetes_pod_name=~\"$pod\"}",
           "interval": "",
           "legendFormat": "Used - {{kubernetes_pod_name}}",
           "refId": "B"
         },
         {
-          "expr": "process_resident_memory_bytes{app=~\"$app\", kubernetes_pod_name=~\"$pod\"}",
+          "datasource": "$datasource",
+          "expr": "process_resident_memory_bytes{app_kubernetes_io_name=~\"$app\", kubernetes_pod_name=~\"$pod\"}",
           "interval": "",
           "legendFormat": "Resident - {{kubernetes_pod_name}}",
           "refId": "C"
         },
         {
-          "expr": "nodejs_external_memory_bytes{app=~\"$app\", kubernetes_pod_name=~\"$pod\"}",
+          "datasource": "$datasource",
+          "expr": "nodejs_external_memory_bytes{app_kubernetes_io_name=~\"$app\", kubernetes_pod_name=~\"$pod\"}",
           "interval": "",
           "legendFormat": "External - {{kubernetes_pod_name}}",
           "refId": "D"
         }
       ],
       "thresholds": [],
-      "timeFrom": null,
       "timeRegions": [],
-      "timeShift": null,
       "title": "Heap Memory Usage",
       "tooltip": {
         "shared": true,
@@ -1110,9 +1019,7 @@
       },
       "type": "graph",
       "xaxis": {
-        "buckets": null,
         "mode": "time",
-        "name": null,
         "show": true,
         "values": []
       },
@@ -1120,25 +1027,18 @@
         {
           "$$hashKey": "object:997",
           "format": "bytes",
-          "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
           "show": true
         },
         {
           "$$hashKey": "object:998",
           "format": "short",
-          "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
           "show": false
         }
       ],
       "yaxis": {
-        "align": false,
-        "alignLevel": null
+        "align": false
       }
     },
     {
@@ -1150,7 +1050,6 @@
       "description": "Rate of garbage collection.",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -1184,7 +1083,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.5",
+      "pluginVersion": "9.0.1",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1194,16 +1093,15 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "rate(nodejs_gc_duration_seconds_count{app=~\"$app\", kubernetes_pod_name=~\"$pod\"}[$interval])",
+          "datasource": "$datasource",
+          "expr": "rate(nodejs_gc_duration_seconds_count{app_kubernetes_io_name=~\"$app\", kubernetes_pod_name=~\"$pod\"}[$interval])",
           "interval": "",
           "legendFormat": "{{kubernetes_pod_name}} - {{kind}}",
           "refId": "A"
         }
       ],
       "thresholds": [],
-      "timeFrom": null,
       "timeRegions": [],
-      "timeShift": null,
       "title": "GC Rate",
       "tooltip": {
         "shared": true,
@@ -1212,36 +1110,27 @@
       },
       "type": "graph",
       "xaxis": {
-        "buckets": null,
         "mode": "time",
-        "name": null,
         "show": true,
         "values": []
       },
       "yaxes": [
         {
           "$$hashKey": "object:1076",
-          "decimals": null,
           "format": "short",
           "label": "",
           "logBase": 1,
-          "max": null,
-          "min": null,
           "show": true
         },
         {
           "$$hashKey": "object:1077",
           "format": "short",
-          "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
           "show": false
         }
       ],
       "yaxis": {
-        "align": false,
-        "alignLevel": null
+        "align": false
       }
     },
     {
@@ -1253,7 +1142,6 @@
       "description": "Count of garbage collection.",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -1287,7 +1175,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.5",
+      "pluginVersion": "9.0.1",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1297,16 +1185,15 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "nodejs_gc_duration_seconds_count{app=~\"$app\", kubernetes_pod_name=~\"$pod\"}",
+          "datasource": "$datasource",
+          "expr": "nodejs_gc_duration_seconds_count{app_kubernetes_io_name=~\"$app\", kubernetes_pod_name=~\"$pod\"}",
           "interval": "",
           "legendFormat": "{{kind}} - {{kubernetes_pod_name}}",
           "refId": "A"
         }
       ],
       "thresholds": [],
-      "timeFrom": null,
       "timeRegions": [],
-      "timeShift": null,
       "title": "GC Count",
       "tooltip": {
         "shared": true,
@@ -1315,36 +1202,27 @@
       },
       "type": "graph",
       "xaxis": {
-        "buckets": null,
         "mode": "time",
-        "name": null,
         "show": true,
         "values": []
       },
       "yaxes": [
         {
           "$$hashKey": "object:1155",
-          "decimals": null,
           "format": "short",
           "label": "",
           "logBase": 2,
-          "max": null,
-          "min": null,
           "show": true
         },
         {
           "$$hashKey": "object:1156",
           "format": "short",
-          "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
           "show": false
         }
       ],
       "yaxis": {
-        "align": false,
-        "alignLevel": null
+        "align": false
       }
     },
     {
@@ -1356,7 +1234,6 @@
       "description": "Usage of heap space.",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -1390,7 +1267,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.5",
+      "pluginVersion": "9.0.1",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1400,16 +1277,15 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "nodejs_heap_space_size_used_bytes{app=~\"$app\", kubernetes_pod_name=~\"$pod\"}",
+          "datasource": "$datasource",
+          "expr": "nodejs_heap_space_size_used_bytes{app_kubernetes_io_name=~\"$app\", kubernetes_pod_name=~\"$pod\"}",
           "interval": "",
           "legendFormat": "{{space}} - {{kubernetes_pod_name}}",
           "refId": "A"
         }
       ],
       "thresholds": [],
-      "timeFrom": null,
       "timeRegions": [],
-      "timeShift": null,
       "title": "Heap Space Used",
       "tooltip": {
         "shared": true,
@@ -1418,9 +1294,7 @@
       },
       "type": "graph",
       "xaxis": {
-        "buckets": null,
         "mode": "time",
-        "name": null,
         "show": true,
         "values": []
       },
@@ -1428,30 +1302,23 @@
         {
           "$$hashKey": "object:1234",
           "format": "bytes",
-          "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
           "show": true
         },
         {
           "$$hashKey": "object:1235",
           "format": "short",
-          "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
           "show": true
         }
       ],
       "yaxis": {
-        "align": false,
-        "alignLevel": null
+        "align": false
       }
     }
   ],
   "refresh": false,
-  "schemaVersion": 27,
+  "schemaVersion": 36,
   "style": "dark",
   "tags": [
     "node.js",
@@ -1465,8 +1332,6 @@
           "text": "prometheus",
           "value": "prometheus"
         },
-        "description": null,
-        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": "Datasource",
@@ -1481,20 +1346,17 @@
         "type": "datasource"
       },
       {
-        "allValue": null,
         "current": {
-          "selected": false,
+          "selected": true,
           "text": [
-            "All"
+            "gateway"
           ],
           "value": [
-            "$__all"
+            "gateway"
           ]
         },
         "datasource": "$datasource",
-        "definition": "label_values(nodejs_eventloop_lag_seconds, app)",
-        "description": null,
-        "error": null,
+        "definition": "label_values(nodejs_version_info, app_kubernetes_io_name)",
         "hide": 0,
         "includeAll": true,
         "label": "App",
@@ -1502,7 +1364,7 @@
         "name": "app",
         "options": [],
         "query": {
-          "query": "label_values(nodejs_eventloop_lag_seconds, app)",
+          "query": "label_values(nodejs_version_info, app_kubernetes_io_name)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,
@@ -1510,15 +1372,13 @@
         "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
       },
       {
-        "allValue": null,
         "current": {
-          "selected": false,
+          "selected": true,
           "text": [
             "All"
           ],
@@ -1527,9 +1387,7 @@
           ]
         },
         "datasource": "$datasource",
-        "definition": "label_values(nodejs_eventloop_lag_seconds{app=~\"$app\"}, kubernetes_pod_name)",
-        "description": null,
-        "error": null,
+        "definition": "label_values(nodejs_eventloop_lag_seconds{app_kubernetes_io_name=~\"$app\"}, kubernetes_pod_name)",
         "hide": 0,
         "includeAll": true,
         "label": "pod",
@@ -1537,7 +1395,7 @@
         "name": "pod",
         "options": [],
         "query": {
-          "query": "label_values(nodejs_eventloop_lag_seconds{app=~\"$app\"}, kubernetes_pod_name)",
+          "query": "label_values(nodejs_eventloop_lag_seconds{app_kubernetes_io_name=~\"$app\"}, kubernetes_pod_name)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 2,
@@ -1545,7 +1403,6 @@
         "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -1553,7 +1410,7 @@
       {
         "allValue": ".*",
         "current": {
-          "selected": false,
+          "selected": true,
           "text": [
             "All"
           ],
@@ -1562,9 +1419,7 @@
           ]
         },
         "datasource": "$datasource",
-        "definition": "label_values(nodejs_eventloop_lag_seconds{app=~\"$app\", kubernetes_pod_name=~\"$pod\"}, instance)",
-        "description": null,
-        "error": null,
+        "definition": "label_values(nodejs_eventloop_lag_seconds{app_kubernetes_io_name=~\"$app\", kubernetes_pod_name=~\"$pod\"}, instance)",
         "hide": 2,
         "includeAll": true,
         "label": "instance",
@@ -1572,7 +1427,7 @@
         "name": "instance",
         "options": [],
         "query": {
-          "query": "label_values(nodejs_eventloop_lag_seconds{app=~\"$app\", kubernetes_pod_name=~\"$pod\"}, instance)",
+          "query": "label_values(nodejs_eventloop_lag_seconds{app_kubernetes_io_name=~\"$app\", kubernetes_pod_name=~\"$pod\"}, instance)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 2,
@@ -1580,7 +1435,6 @@
         "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -1594,8 +1448,6 @@
           "text": "1m",
           "value": "1m"
         },
-        "description": null,
-        "error": null,
         "hide": 0,
         "label": "Interval",
         "name": "interval",
@@ -1680,5 +1532,6 @@
   "timezone": "",
   "title": "Node.js Exporter Dashboard",
   "uid": "yX2d7k1Gk",
-  "version": 2
+  "version": 5,
+  "weekStart": ""
 }
